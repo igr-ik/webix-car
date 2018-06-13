@@ -8,23 +8,12 @@
         "scheduler":true,
         "APPNAME":true, "VERSION":true, "PRODUCTION":true
     },
-    "extends": "eslint:recommended",
+    "extends": "./node_modules/eslint-xbsoftware/2__single_quotes_and_spaces/.eslintrc",
     "parserOptions": {
         "sourceType": "module"
     },
     "rules": {
-        "indent": [
-            "error",
-            "tab",
-            {"SwitchCase":1}
-        ],
-        "quotes": [
-            "error",
-            "double"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ]
+        "class-methods-use-this": "off",
+        "no-param-reassign": "off"
     }
 }
