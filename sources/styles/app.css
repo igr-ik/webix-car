@@ -103,3 +103,28 @@
 .status_good{
 	color:#ddd;
 }
+
+.bucket__item {
+	width: 75%;
+	margin: 10px auto;
+	padding: 10px;
+	background-color: #f9f9f9;
+	border-radius: 5px;
+	box-shadow: 0 0 7px rgba(0, 0, 0, 0.15);
+	transition: box-shadow 250ms;
+}
+
+.bucket__item:hover {
+	box-shadow: 0 0 7px rgba(0, 0, 0, 0.20);
+}
+
+.bucket-search .webix_el_box,
+.bucket-add-btn .webix_el_box {
+	padding: 0;
+}
+
+.bucket-add-btn .webixtype_base {
+	font-size: 20px;
+	text-align: center;
+	border-radius: 0;
+}
