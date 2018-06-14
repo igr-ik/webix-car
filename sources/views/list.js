@@ -3,14 +3,11 @@ import {JetView} from 'webix-jet';
 export default class ListView extends JetView {
     config() {
         return {
-            id: 'bucket-list',
             view: 'list',
-            css: 'bucket',
             type: {
-                templateStart: '<div webix_l_id="#id#" class="bucket__item">',
+                height: 'auto',
                 template: '<div>#title#</div>'
-                        + '<div>#quantity# of 20</div>',
-                templateEnd: '</div>'
+                        + '<div>#quantity# of 20</div>'
             },
             data: [
                 {id: 1, title: 'Двигатели', quantity: 2},
