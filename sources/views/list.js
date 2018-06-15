@@ -1,6 +1,11 @@
 import {JetView} from 'webix-jet';
 
 export default class ListView extends JetView {
+    constructor(app, name, config) {
+        super(app, name);
+        this.collection = config.collection;
+    }
+
     config() {
         return {
             view: 'list',
@@ -41,5 +46,10 @@ export default class ListView extends JetView {
                 {id: 3, title: 'Колеса', quantity: 8}
             ]
         };
+    }
+
+    init() {
+        let collection = this.collection.fetchData();
+
     }
 }

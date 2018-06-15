@@ -8105,22 +8105,49 @@
   ],
   "requiredGoods": [
     {
+      "id": 1,
       "name": "Термостат",
       "amount": 100,
-      "requiredAmount": 20,
-      "suppliers": ["Merkur", "Acura"]
+      "suppliers": [
+        {
+          "name": "Merkur",
+          "requiredAmount": 14
+        },
+        {
+          "name": "Acura",
+          "requiredAmount": 6
+        }
+      ]
     },
     {
+      "id": 2,
       "name": "Маховик",
       "amount": 43,
-      "requiredAmount": 17,
-      "suppliers": ["Toyota", "Audi", "Plymouth"]
+      "suppliers": [
+        {
+          "name": "Toyota",
+          "requiredAmount": 5
+        },
+        {
+          "name": "Audi",
+          "requiredAmount": 6
+        },
+        {
+          "name": "Plymouth",
+          "requiredAmount": 6
+        }
+      ]
     },
     {
+      "id": 3,
       "name": "Амортизаторы",
       "amount": 92,
-      "requiredAmount": 4,
-      "suppliers": ["Chevrolet"]
+      "suppliers": [
+        {
+          "name": "Chevrolet",
+          "requiredAmount": 4
+        }
+      ]
     }
   ]
 }
