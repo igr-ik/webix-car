@@ -2,7 +2,7 @@ import {JetView} from 'webix-jet';
 
 import ListView from 'views/list';
 import ButtonsView from 'views/buttons';
-import SearchResultView from 'views/search-result';
+import SearchResultView from 'views/search-result/search-result';
 
 export default class TopView extends JetView {
     config() {

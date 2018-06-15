@@ -10,12 +10,14 @@ export default class ButtonsView extends JetView {
                     type: 'iconButton',
                     icon: 'plus',
                     label: 'Add',
-                    css: 'bucket-add-btn'
+                    css: 'bucket-btn'
                 },
                 {
                     view: 'button',
-                    value: 'Search',
-                    css: 'bucket-search-btn'
+                    type: 'iconButton',
+                    icon: 'search',
+                    label: 'Search',
+                    css: 'bucket-btn'
                 }
             ]
         };

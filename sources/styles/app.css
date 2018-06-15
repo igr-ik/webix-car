@@ -104,8 +104,36 @@
 	color:#ddd;
 }
 
-.bucket-add-btn .webixtype_base,
-.bucket-search-btn .webixtype_base {
+.bucket-btn .webixtype_base {
 	font-size: 20px;
 	text-align: center;
+}
+
+.webix_list_item_bucket {
+    display: flex;
+}
+
+.webix_list_item_content {
+    flex-grow: 1;
+}
+
+.webix_list_item_title {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.webix_list_item_btn {
+    display: flex;
+    width: 34px;
+    height: 34px;
+    justify-content: center;
+    align-items: center;
+}
+
+.webix_list_item_btn:hover {
+    background-color: #f9f9f9;
+}
+
+.webix_list_item_btn .webix_icon {
+    width: auto;
 }
