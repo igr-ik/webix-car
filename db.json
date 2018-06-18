@@ -8107,6 +8107,7 @@
     {
       "id": 1,
       "name": "Термостат",
+      "image": "http://www.1gai.ru/uploads/posts/2016-05/thumbs/1464071390_47.jpg",
       "amount": 100,
       "suppliers": [
         {
@@ -8122,6 +8123,7 @@
     {
       "id": 2,
       "name": "Маховик",
+      "image": "http://www.1gai.ru/uploads/posts/2016-05/thumbs/1464071385_20.jpg",
       "amount": 43,
       "suppliers": [
         {
@@ -8141,6 +8143,7 @@
     {
       "id": 3,
       "name": "Амортизаторы",
+      "image": "http://www.1gai.ru/uploads/posts/2016-05/thumbs/1464072162_40.jpg",
       "amount": 92,
       "suppliers": [
         {

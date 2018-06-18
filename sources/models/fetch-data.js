@@ -23,4 +23,10 @@ export default class FetchData {
             method: 'GET'
         });
     }
+
+    delete(url) {
+        return this._fetch(this.getUrl(url), {
+            method: 'DELETE'
+        });
+    }
 }

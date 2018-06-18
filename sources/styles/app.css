@@ -113,8 +113,18 @@
     display: flex;
 }
 
+.webix_list_item_images {
+    width: 80px;
+}
+
+.webix_list_item_images img {
+    max-width: 100%;
+    vertical-align: top;
+}
+
 .webix_list_item_content {
     flex-grow: 1;
+    padding: 10px;
 }
 
 .webix_list_item_title {
