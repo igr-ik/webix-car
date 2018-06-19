@@ -1,18 +1,18 @@
 import {JetView} from 'webix-jet';
-import RequiredGoods from '../models/reguired-goods';
+
+import AddEditGoodWindow from './add-edit-window';
 
 export default class ListView extends JetView {
     constructor(app, name, config) {
         super(app, name);
         this.collection = config.collection;
-        this.collection.fetchData()
-            .then(res => $$('list').parse(JSON.stringify(res), 'json'));
+        this.collection.fetchData();
     }
 
     config() {
         return {
-            id: 'list',
             view: 'list',
+            data: this.collection,
             type: {
                 height: 'auto',
                 classname: (obj, common, marks) => {
@@ -22,21 +22,18 @@ export default class ListView extends JetView {
                     return `${nativeClassName} webix_list_item_bucket`;
                 },
                 template: ({name, image, amount, suppliers}) => {
-                    let suppliersList = [];
-
+                    let suppliersList = suppliers.map(item => item.name).join(', ');
                     let requiredAmount = suppliers
                         .reduce((sum, curVal) => sum + curVal.requiredAmount, 0);
 
-                    suppliers.forEach(item => suppliersList.push(item.name));
-
                     return `
                         <div class="webix_list_item_images">
-                            <img src="${image}" alt="">
+                            <img src="${image}" alt="${name}">
                         </div>
                         <div class="webix_list_item_content">
                             <div class="webix_list_item_title">${name}</div>
                             <div class="webix_list_item_quantity">${requiredAmount} of ${amount}</div>
-                            <div class="webix_list_item_suppliers">Suppliers: ${suppliersList.join(', ')}</div>
+                            <div class="webix_list_item_suppliers">Suppliers: ${suppliersList}</div>
                         </div>
                         <div class="webix_list_item_btnset">
                             <div class="edit webix_list_item_btn"><span class="webix_icon fa-pencil"></span></div>
@@ -46,23 +43,31 @@ export default class ListView extends JetView {
                 }
             },
             onClick: {
-                edit: (e, id) => {
-                    console.log('edit', id);
-
-                    return false;
-                },
-                remove: (e, id) => {
-                    webix.confirm({
-                        type: 'confirm-warning',
-                        text: 'Are you sure you want to delete this part?',
-                        callback: (result) => {
-                            if (result) {
-                                new RequiredGoods().removeGood(id);
-                            }
-                        }
-                    });
-                }
+                edit: this.editGood.bind(this),
+                remove: this.removeGood.bind(this)
             }
         };
+    }
+
+    editGood(e, id) {
+        this.windowEdit.show();
+    }
+
+    removeGood(e, id) {
+        webix.confirm({
+            title: 'Delete',
+            type: 'confirm-warning',
+            text: 'Are you sure you want to delete this part?',
+            callback: (result) => {
+                if (result) {
+                    this.collection.removeGood(id);
+                    this.collection.remove(id);
+                }
+            }
+        });
+    }
+
+    init() {
+        this.windowEdit = this.ui(AddEditGoodWindow);
     }
 }

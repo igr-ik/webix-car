@@ -7,26 +7,16 @@ export default class FetchData {
         return this.baseUrl + url;
     }
 
-    _fetch(url, config) {
-        return fetch(url, config)
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-
-                throw new Error('Something went wrong ...');
-            });
+    _fetch(url, method) {
+        return webix.ajax()[method](url)
+            .then(response => response.json());
     }
 
     get(url) {
-        return this._fetch(this.getUrl(url), {
-            method: 'GET'
-        });
+        return this._fetch(this.getUrl(url), 'get');
     }
 
     delete(url) {
-        return this._fetch(this.getUrl(url), {
-            method: 'DELETE'
-        });
+        return this._fetch(this.getUrl(url), 'del');
     }
 }
