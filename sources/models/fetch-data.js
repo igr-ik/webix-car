@@ -1,22 +1,22 @@
 export default class FetchData {
-    constructor() {
-        this.baseUrl = 'http://localhost:3000/';
-    }
-
-    getUrl(url) {
-        return this.baseUrl + url;
-    }
-
-    _fetch(url, method) {
-        return webix.ajax()[method](url)
-            .then(response => response.json());
+    _getUrl(url) {
+        return `http://localhost:3000/${url}`;
     }
 
     get(url) {
-        return this._fetch(this.getUrl(url), 'get');
+        return webix.ajax().get(this._getUrl(url))
+            .then(response => response.json());
     }
 
     delete(url) {
-        return this._fetch(this.getUrl(url), 'del');
+        return webix.ajax().del(this._getUrl(url));
+    }
+
+    put(url, data = {}) {
+        return webix.ajax()
+            .headers({
+                'Content-type': 'application/json; charset=utf-8'
+            })
+            .put(this._getUrl(url), JSON.stringify(data));
     }
 }

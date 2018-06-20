@@ -1,7 +1,5 @@
 import {JetView} from 'webix-jet';
 
-import goodsList from '../models/goods-list';
-
 export default class AddEditGoodWindow extends JetView {
     config() {
         return {
@@ -14,11 +12,10 @@ export default class AddEditGoodWindow extends JetView {
                 cols: [
                     {
                         view: 'label',
-                        label: 'Edit'
+                        selector: 'head-title'
                     },
                     {
                         view: 'button',
-                        title: 'ADASDAS',
                         type: 'icon',
                         icon: 'times',
                         width: 30,
@@ -31,16 +28,24 @@ export default class AddEditGoodWindow extends JetView {
                 view: 'form',
                 elements: [
                     {
-                        view: 'select',
+                        view: 'richselect',
+                        selector: 'richselect',
                         label: 'Name',
-                        options: ['Master', 'Release']
+                        options: {
+                            data: this.app.getService('goods'),
+                            body: {
+                                template: '#name#'
+                            }
+                        }
                     },
                     {
                         view: 'counter',
+                        selector: 'amount',
                         label: 'Amount',
+                        name: 'amount',
                         step: 1,
                         value: 33,
-                        min: 21,
+                        min: 1,
                         max: 100
                     },
                     {
@@ -48,7 +53,8 @@ export default class AddEditGoodWindow extends JetView {
                             {
                                 view: 'button',
                                 value: 'Ok',
-                                type: 'form'
+                                type: 'form',
+                                click: () => this.onSubmit()
                             },
                             {
                                 view: 'button',
@@ -62,11 +68,38 @@ export default class AddEditGoodWindow extends JetView {
         };
     }
 
+    setHeaderTitle(text) {
+        this.getRoot().queryView({selector: 'head-title'}).setValue(text);
+    }
+
     show() {
         this.getRoot().show();
     }
 
     close() {
         this.getRoot().hide();
+    }
+
+    getView(view) {
+        return this.getRoot().queryView({selector: view});
+    }
+
+    setRichselectValue(value) {
+        this.getView('richselect').setValue(value);
+    }
+
+    onSubmit() {
+        this.getParentView().onSubmit({
+            goodId: this.getView('richselect').getValue(),
+            amount: this.getView('amount').getValue(),
+            suppliers: [
+                {
+                    supplierId: 6,
+                    requiredAmount: 4
+                }
+            ]
+        });
+
+        this.close();
     }
 }

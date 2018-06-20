@@ -11,6 +11,7 @@ export default class ListView extends JetView {
 
     config() {
         return {
+            id: 'bucket',
             view: 'list',
             data: this.collection,
             type: {
@@ -21,17 +22,22 @@ export default class ListView extends JetView {
 
                     return `${nativeClassName} webix_list_item_bucket`;
                 },
-                template: ({name, image, amount, suppliers}) => {
-                    let suppliersList = suppliers.map(item => item.name).join(', ');
+                template: ({goodId, amount, suppliers}) => {
+                    let suppliersList = suppliers
+                        .map(item => this.app.getService('suppliers').getItem(item.supplierId).name)
+                        .join(', ');
+
                     let requiredAmount = suppliers
                         .reduce((sum, curVal) => sum + curVal.requiredAmount, 0);
 
+                    let good = this.app.getService('goods').getItem(goodId);
+
                     return `
                         <div class="webix_list_item_images">
-                            <img src="${image}" alt="${name}">
+                            <img src="${good.image}" alt="${good.name}">
                         </div>
                         <div class="webix_list_item_content">
-                            <div class="webix_list_item_title">${name}</div>
+                            <div class="webix_list_item_title">${good.name}</div>
                             <div class="webix_list_item_quantity">${requiredAmount} of ${amount}</div>
                             <div class="webix_list_item_suppliers">Suppliers: ${suppliersList}</div>
                         </div>
@@ -43,28 +49,54 @@ export default class ListView extends JetView {
                 }
             },
             onClick: {
-                edit: this.editGood.bind(this),
-                remove: this.removeGood.bind(this)
+                edit: this.editHandler.bind(this),
+                remove: this.removeHandler.bind(this)
             }
         };
     }
 
-    editGood(e, id) {
+    editHandler(e, id) {
+        let selectedGood = this.collection.getItem(id);
+
+        this.windowEdit.setHeaderTitle('Edit good');
+        this.windowEdit.setRichselectValue(selectedGood.goodId);
         this.windowEdit.show();
+        this.currentEditGoodId = id;
     }
 
-    removeGood(e, id) {
+    removeHandler(e, id) {
         webix.confirm({
             title: 'Delete',
             type: 'confirm-warning',
             text: 'Are you sure you want to delete this part?',
             callback: (result) => {
                 if (result) {
-                    this.collection.removeGood(id);
-                    this.collection.remove(id);
+                    this.collection.removeGood(id)
+                        .then(() => this.collection.remove(id))
+                        .fail(() => webix.message({
+                            text: 'Uninstall error',
+                            type: 'error'
+                        }));
                 }
             }
         });
+    }
+
+    editGood(data) {
+        this.collection.updateGood(this.currentEditGoodId, data)
+            .then(() => this.collection.updateItem(this.currentEditGoodId, data))
+            .fail(() => webix.message({
+                text: 'Error editing',
+                type: 'error'
+            }));
+    }
+
+    addGood(data) {
+        console.log('addGood', data);
+    }
+
+    onSubmit(data) {
+        this.editGood(data);
     }
 
     init() {
