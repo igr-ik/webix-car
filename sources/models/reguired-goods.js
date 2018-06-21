@@ -2,7 +2,7 @@ import FetchData from '../models/fetch-data';
 
 export default class RequiredGoods extends webix.DataCollection {
     fetchData() {
-        this.waitData = new FetchData().get('requiredGoods')
+        this.waitData = FetchData.get('requiredGoods')
             .then((res) => {
                 this.waitData = null;
                 this.parse(res);
@@ -13,10 +13,23 @@ export default class RequiredGoods extends webix.DataCollection {
     }
 
     removeGood(id) {
-        return new FetchData().delete(`requiredGoods/${id}`);
+        return FetchData.delete(`requiredGoods/${id}`)
+            .then(() => this.remove(id));
     }
 
     updateGood(id, data) {
-        return new FetchData().put(`requiredGoods/${id}`, data);
+        return FetchData.put(`requiredGoods/${id}`, data)
+            .then((res) => {
+                this.updateItem(id, data);
+                return res.json();
+            });
+    }
+
+    addGood(data) {
+        return FetchData.post('requiredGoods', data)
+            .then((res) => {
+                this.add(data);
+                return res.json();
+            });
     }
 }

@@ -49,18 +49,14 @@ export default class ListView extends JetView {
                 }
             },
             onClick: {
-                edit: this.editHandler.bind(this),
+                edit: this.showEditWindow.bind(this),
                 remove: this.removeHandler.bind(this)
             }
         };
     }
 
-    editHandler(e, id) {
-        let selectedGood = this.collection.getItem(id);
-
-        this.windowEdit.setHeaderTitle('Edit good');
-        this.windowEdit.setRichselectValue(selectedGood.goodId);
-        this.windowEdit.show();
+    showEditWindow(e, id) {
+        this.windowEdit.showForEdit(this.collection.getItem(id));
         this.currentEditGoodId = id;
     }
 
@@ -72,11 +68,7 @@ export default class ListView extends JetView {
             callback: (result) => {
                 if (result) {
                     this.collection.removeGood(id)
-                        .then(() => this.collection.remove(id))
-                        .fail(() => webix.message({
-                            text: 'Uninstall error',
-                            type: 'error'
-                        }));
+                        .fail(() => this.app.appErrorMessage('Uninstall error'));
                 }
             }
         });
@@ -84,22 +76,19 @@ export default class ListView extends JetView {
 
     editGood(data) {
         this.collection.updateGood(this.currentEditGoodId, data)
-            .then(() => this.collection.updateItem(this.currentEditGoodId, data))
-            .fail(() => webix.message({
-                text: 'Error editing',
-                type: 'error'
-            }));
+            .fail(() => this.app.appErrorMessage('Error editing'));
     }
 
     addGood(data) {
-        console.log('addGood', data);
-    }
-
-    onSubmit(data) {
-        this.editGood(data);
+        this.collection.addGood(data)
+            .fail(() => this.app.appErrorMessage('Error additing'));
     }
 
     init() {
-        this.windowEdit = this.ui(AddEditGoodWindow);
+        this.app.attachEvent('window:add:submit', data => this.addGood(data));
+
+        this.windowEdit = this.ui(new AddEditGoodWindow(this.app, '', {
+            submitHandler: this.editGood.bind(this)
+        }));
     }
 }

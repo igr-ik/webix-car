@@ -1,6 +1,12 @@
 import {JetView} from 'webix-jet';
 
 export default class AddEditGoodWindow extends JetView {
+    constructor(app, name, config) {
+        super(app, name);
+
+        this.submitHandler = config.submitHandler;
+    }
+
     config() {
         return {
             view: 'window',
@@ -44,9 +50,8 @@ export default class AddEditGoodWindow extends JetView {
                         label: 'Amount',
                         name: 'amount',
                         step: 1,
-                        value: 33,
-                        min: 1,
-                        max: 100
+                        value: 0,
+                        min: 0
                     },
                     {
                         cols: [
@@ -69,10 +74,23 @@ export default class AddEditGoodWindow extends JetView {
     }
 
     setHeaderTitle(text) {
-        this.getRoot().queryView({selector: 'head-title'}).setValue(text);
+        this.getHeaderTitle().setValue(text);
     }
 
-    show() {
+    showForEdit(good) {
+        let {goodId, amount, suppliers} = good;
+        this.setHeaderTitle('Edit good');
+        this.setRichselectValue(goodId);
+        this.setAmountValue(amount);
+        this.goodSuppliers = suppliers;
+        this.getRoot().show();
+    }
+
+    showForAdd() {
+        this.setHeaderTitle('Add good');
+        this.setRichselectValue(1);
+        this.setAmountValue(0);
+        this.goodSuppliers = [];
         this.getRoot().show();
     }
 
@@ -80,26 +98,42 @@ export default class AddEditGoodWindow extends JetView {
         this.getRoot().hide();
     }
 
-    getView(view) {
-        return this.getRoot().queryView({selector: view});
+    getHeaderTitle() {
+        return this.getRoot().queryView({selector: 'head-title'});
+    }
+
+    getRichselectView() {
+        return this.getRoot().queryView({selector: 'richselect'});
+    }
+
+    getAmountView() {
+        return this.getRoot().queryView({selector: 'amount'});
     }
 
     setRichselectValue(value) {
-        this.getView('richselect').setValue(value);
+        this.getRichselectView().setValue(value);
+    }
+
+    setAmountValue(value) {
+        this.getAmountView().setValue(value);
+    }
+
+    getRichselectValue() {
+        return this.getRichselectView().getValue();
+    }
+
+    getAmountValue() {
+        return this.getAmountView().getValue();
     }
 
     onSubmit() {
-        this.getParentView().onSubmit({
-            goodId: this.getView('richselect').getValue(),
-            amount: this.getView('amount').getValue(),
-            suppliers: [
-                {
-                    supplierId: 6,
-                    requiredAmount: 4
-                }
-            ]
-        });
+        let data = {
+            goodId: this.getRichselectValue(),
+            amount: this.getAmountValue(),
+            suppliers: this.goodSuppliers
+        };
 
+        this.submitHandler(data);
         this.close();
     }
 }

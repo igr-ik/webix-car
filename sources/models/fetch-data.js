@@ -1,4 +1,4 @@
-export default class FetchData {
+class FetchData {
     _getUrl(url) {
         return `http://localhost:3000/${url}`;
     }
@@ -19,4 +19,14 @@ export default class FetchData {
             })
             .put(this._getUrl(url), JSON.stringify(data));
     }
+
+    post(url, data = {}) {
+        return webix.ajax()
+            .headers({
+                'Content-type': 'application/json; charset=utf-8'
+            })
+            .post(this._getUrl(url), JSON.stringify(data));
+    }
 }
+
+export default new FetchData();

@@ -7357,9 +7357,8 @@
   ],
   "requiredGoods": [
     {
-      "id": 1,
-      "goodId": 47,
-      "amount": 100,
+      "goodId": 30,
+      "amount": 60,
       "suppliers": [
         {
           "supplierId": 2,
@@ -7369,7 +7368,8 @@
           "supplierId": 1,
           "requiredAmount": 6
         }
-      ]
+      ],
+      "id": 1
     },
     {
       "id": 2,
@@ -7391,15 +7391,33 @@
       ]
     },
     {
-      "id": 3,
-      "goodId": 40,
-      "amount": 92,
+      "goodId": 42,
+      "amount": 72,
       "suppliers": [
         {
           "supplierId": 6,
           "requiredAmount": 4
         }
-      ]
+      ],
+      "id": 3
+    },
+    {
+      "goodId": 7,
+      "amount": 42,
+      "suppliers": [],
+      "id": 5
+    },
+    {
+      "goodId": 32,
+      "amount": 11,
+      "suppliers": [],
+      "id": 6
+    },
+    {
+      "goodId": 24,
+      "amount": 1,
+      "suppliers": [],
+      "id": 7
     }
   ]
 }

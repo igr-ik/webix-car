@@ -22,7 +22,16 @@ export default class MyApp extends JetApp {
         this.setService('goods', new GoodsCollection());
         this.getService('goods').fetchData();
     }
+
+    appErrorMessage(text) {
+        webix.message({
+            text,
+            type: 'error'
+        });
+    }
 }
+
+webix.extend(JetApp.prototype, webix.EventSystem);
 
 if (!BUILD_AS_MODULE) {
     webix.ready(() => new MyApp().render());

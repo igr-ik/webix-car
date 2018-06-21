@@ -13,7 +13,7 @@ export default class ButtonsView extends JetView {
                     icon: 'plus',
                     label: 'Add',
                     css: 'bucket-btn',
-                    click: () => this.addHandler()
+                    click: () => this.showAddWindow()
                 },
                 {
                     view: 'button',
@@ -26,20 +26,17 @@ export default class ButtonsView extends JetView {
         };
     }
 
-    addHandler() {
-        this.windowAdd.setHeaderTitle('Add good');
-        this.windowAdd.setRichselectValue(1);
-        this.windowAdd.show();
+    showAddWindow() {
+        this.windowAdd.showForAdd();
     }
 
-    onSubmit(data) {
-        console.log(this.getParentView().getRoot() );
-        console.log(this.getParentView().getRoot().getChildViews() );
-
-        // this.getParentView().addGood(data);
+    addGood(data) {
+        this.app.callEvent('window:add:submit', [data]);
     }
 
     init() {
-        this.windowAdd = this.ui(AddEditGoodWindow);
+        this.windowAdd = this.ui(new AddEditGoodWindow(this.app, '', {
+            submitHandler: this.addGood.bind(this)
+        }));
     }
 }
