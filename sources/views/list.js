@@ -73,21 +73,29 @@ export default class ListView extends JetView {
     showEditWindow(e, id) {
         this.windowEdit.showFor(this.collection.getItem(id));
 
-        this.on(this.getWindowForm(), 'submit:good', (data) => {
+        const submitGoodListener = this.on(this.getWindowForm(), 'submit:good', (data) => {
             this.editGood(data);
+        });
+
+        this.once(this.windowEdit, 'close', () => {
+            this.off(submitGoodListener);
         });
     }
 
     showAddWindow() {
         this.windowEdit.showFor();
 
-        this.on(this.getWindowForm(), 'submit:good', (data) => {
+        const submitGoodListener = this.on(this.getWindowForm(), 'submit:good', (data) => {
             if (this.getWindowForm().validate()) {
                 this.addGood(data);
             }
             else {
                 this.app.showErrorMessage('Form data is invalid');
             }
+        });
+
+        this.once(this.windowEdit, 'close', () => {
+            this.off(submitGoodListener);
         });
     }
 

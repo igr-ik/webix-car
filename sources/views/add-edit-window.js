@@ -75,6 +75,9 @@ export default class AddEditGoodWindow extends JetView {
                 rules: {
                     goodId: webix.rules.isNotEmpty
                 }
+            },
+            on: {
+                onHide: () => this.callEvent('close')
             }
         };
     }
@@ -96,7 +99,6 @@ export default class AddEditGoodWindow extends JetView {
 
     close() {
         this.getRoot().hide();
-        this.getForm().detachEvent('submit:good');
     }
 
     getHeader() {
