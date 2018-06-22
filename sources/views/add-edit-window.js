@@ -1,12 +1,6 @@
 import {JetView} from 'webix-jet';
 
 export default class AddEditGoodWindow extends JetView {
-    constructor(app, name, config) {
-        super(app, name);
-
-        this.submitHandler = config.submitHandler;
-    }
-
     config() {
         return {
             view: 'window',
@@ -32,11 +26,12 @@ export default class AddEditGoodWindow extends JetView {
             },
             body: {
                 view: 'form',
+                selector: 'form',
                 elements: [
                     {
                         view: 'richselect',
-                        selector: 'richselect',
                         label: 'Name',
+                        name: 'goodId',
                         options: {
                             data: this.app.getService('goods'),
                             body: {
@@ -46,12 +41,20 @@ export default class AddEditGoodWindow extends JetView {
                     },
                     {
                         view: 'counter',
-                        selector: 'amount',
                         label: 'Amount',
                         name: 'amount',
                         step: 1,
-                        value: 0,
                         min: 0
+                    },
+                    {
+                        view: 'text',
+                        hidden: true,
+                        name: 'id'
+                    },
+                    {
+                        view: 'text',
+                        hidden: true,
+                        name: 'suppliers'
                     },
                     {
                         cols: [
@@ -68,72 +71,43 @@ export default class AddEditGoodWindow extends JetView {
                             }
                         ]
                     }
-                ]
+                ],
+                rules: {
+                    goodId: webix.rules.isNotEmpty
+                }
             }
         };
     }
 
     setHeaderTitle(text) {
-        this.getHeaderTitle().setValue(text);
+        this.getHeader().setValue(text);
     }
 
-    showForEdit(good) {
-        let {goodId, amount, suppliers} = good;
-        this.setHeaderTitle('Edit good');
-        this.setRichselectValue(goodId);
-        this.setAmountValue(amount);
-        this.goodSuppliers = suppliers;
-        this.getRoot().show();
-    }
+    showFor(good) {
+        this.getForm().setValues(good || {
+            id: undefined,
+            amount: 0,
+            suppliers: []
+        });
 
-    showForAdd() {
-        this.setHeaderTitle('Add good');
-        this.setRichselectValue(1);
-        this.setAmountValue(0);
-        this.goodSuppliers = [];
+        this.setHeaderTitle(good ? 'Edit good' : 'Add good');
         this.getRoot().show();
     }
 
     close() {
         this.getRoot().hide();
+        this.getForm().detachEvent('submit:good');
     }
 
-    getHeaderTitle() {
+    getHeader() {
         return this.getRoot().queryView({selector: 'head-title'});
     }
 
-    getRichselectView() {
-        return this.getRoot().queryView({selector: 'richselect'});
-    }
-
-    getAmountView() {
-        return this.getRoot().queryView({selector: 'amount'});
-    }
-
-    setRichselectValue(value) {
-        this.getRichselectView().setValue(value);
-    }
-
-    setAmountValue(value) {
-        this.getAmountView().setValue(value);
-    }
-
-    getRichselectValue() {
-        return this.getRichselectView().getValue();
-    }
-
-    getAmountValue() {
-        return this.getAmountView().getValue();
+    getForm() {
+        return this.getRoot().queryView({selector: 'form'});
     }
 
     onSubmit() {
-        let data = {
-            goodId: this.getRichselectValue(),
-            amount: this.getAmountValue(),
-            suppliers: this.goodSuppliers
-        };
-
-        this.submitHandler(data);
-        this.close();
+        this.getForm().callEvent('submit:good', [this.getForm().getValues()]);
     }
 }

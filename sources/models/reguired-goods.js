@@ -17,19 +17,25 @@ export default class RequiredGoods extends webix.DataCollection {
             .then(() => this.remove(id));
     }
 
-    updateGood(id, data) {
-        return FetchData.put(`requiredGoods/${id}`, data)
+    updateGood(data) {
+        return FetchData.put(`requiredGoods/${data.id}`, data)
             .then((res) => {
-                this.updateItem(id, data);
-                return res.json();
+                const updateData = res.json();
+                this.updateItem(updateData.id, updateData);
+                return updateData;
             });
     }
 
     addGood(data) {
         return FetchData.post('requiredGoods', data)
             .then((res) => {
-                this.add(data);
-                return res.json();
+                const addData = res.json();
+                this.add(addData);
+                return addData;
             });
+    }
+
+    static getTotalRequiredAmount(good) {
+        return good.suppliers.reduce((sum, curVal) => sum + curVal.requiredAmount, 0);
     }
 }

@@ -1,7 +1,5 @@
 import {JetView} from 'webix-jet';
 
-import AddEditGoodWindow from './add-edit-window';
-
 export default class ButtonsView extends JetView {
     config() {
         return {
@@ -13,30 +11,17 @@ export default class ButtonsView extends JetView {
                     icon: 'plus',
                     label: 'Add',
                     css: 'bucket-btn',
-                    click: () => this.showAddWindow()
+                    click: () => this.callEvent('button:add')
                 },
                 {
                     view: 'button',
                     type: 'iconButton',
                     icon: 'search',
                     label: 'Search',
-                    css: 'bucket-btn'
+                    css: 'bucket-btn',
+                    click: () => this.callEvent('button:search')
                 }
             ]
         };
-    }
-
-    showAddWindow() {
-        this.windowAdd.showForAdd();
-    }
-
-    addGood(data) {
-        this.app.callEvent('window:add:submit', [data]);
-    }
-
-    init() {
-        this.windowAdd = this.ui(new AddEditGoodWindow(this.app, '', {
-            submitHandler: this.addGood.bind(this)
-        }));
     }
 }
