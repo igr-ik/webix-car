@@ -7442,6 +7442,12 @@
           "requiredAmount": 2
         }
       ]
+    },
+    {
+      "goodId": 3,
+      "amount": 1,
+      "id": 6,
+      "suppliers": []
     }
   ]
 }

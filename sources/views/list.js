@@ -9,7 +9,7 @@ export default class ListView extends JetView {
         super(app, name);
         this.collection = config.collection;
         this.collection.fetchData();
-        this.buttonsView = new ButtonsView(this.app, '');
+        // this.buttonsView = new ButtonsView(this.app, '');
     }
 
     config() {
@@ -57,13 +57,13 @@ export default class ListView extends JetView {
                         remove: this.removeHandler.bind(this)
                     }
                 },
-                this.getButtonsView()
+                new ButtonsView(this.app, 'some_name')
             ]
         };
     }
 
     getButtonsView() {
-        return this.buttonsView;
+        return this.getRoot().queryView({name: 'some_name'}).$scope;
     }
 
     getWindowForm() {
@@ -127,6 +127,9 @@ export default class ListView extends JetView {
 
     init() {
         this.windowEdit = this.ui(AddEditGoodWindow);
+    }
+
+    ready() {
         this.on(this.getButtonsView(), 'button:add', this.showAddWindow.bind(this));
     }
 }

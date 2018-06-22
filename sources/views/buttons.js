@@ -4,6 +4,7 @@ export default class ButtonsView extends JetView {
     config() {
         return {
             height: 70,
+            name: this.getName(),
             cols: [
                 {
                     view: 'button',
