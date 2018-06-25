@@ -5,6 +5,11 @@ import SearchResultView from './search-result/search-result';
 import RequiredGoods from '../models/reguired-goods';
 
 export default class TopView extends JetView {
+    constructor(app, name, config) {
+        super(app, name, config);
+        this.collection = new RequiredGoods();
+    }
+
     config() {
         return {
             id: 'layout',
@@ -17,7 +22,7 @@ export default class TopView extends JetView {
                             this.app,
                             '',
                             {
-                                collection: new RequiredGoods()
+                                collection: this.collection
                             }
                         )
                     ]
@@ -29,4 +34,15 @@ export default class TopView extends JetView {
             ]
         };
     }
+
+
+    // init() {
+    //     this.on(this.getSearchView(), 'changeOrderedAmount', (supplierId, goodId, newAmount) => {
+    //         const targetRequiredGood = this.collection.find({goodId: goodId});
+    //         const relatedSupplier = targetRequiredGood.suppliers.find({supplierId: supplierId});
+    //         relatedSupplier.amount = newAmount;
+    //
+    //         this.collection.updateGood(targetRequiredGood);
+    //     });
+    // }
 }

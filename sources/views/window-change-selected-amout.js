@@ -1,6 +1,6 @@
-import {JetView} from 'webix-jet';
+import ExtendedJetView from './ExtendedJetView';
 
-export default class WindowChangeSelectedAmount extends JetView {
+export default class WindowChangeSelectedAmount extends ExtendedJetView {
     constructor(app, name, config) {
         super(app, name);
         this.suppliers = config.suppliers;
@@ -81,7 +81,7 @@ export default class WindowChangeSelectedAmount extends JetView {
                 ]
             },
             on: {
-                onHide: () => this.callEvent('window:amount:close')
+                onHide: () => this.callEvent('close')
             }
         };
     }

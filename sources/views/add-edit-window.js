@@ -1,8 +1,8 @@
-import {JetView} from 'webix-jet';
 import RequiredGoods from '../models/reguired-goods';
 import WindowChangeSelectedAmount from './window-change-selected-amout';
+import ExtendedJetView from './ExtendedJetView';
 
-export default class AddEditGoodWindow extends JetView {
+export default class AddEditGoodWindow extends ExtendedJetView {
     config() {
         return {
             view: 'window',
@@ -112,7 +112,7 @@ export default class AddEditGoodWindow extends JetView {
         return this.getRoot().queryView({selector: 'form'});
     }
 
-    showWindowChangeAmount() {
+    showWindowChangeAmount(onFinish) {
         const windowChangeAmount = this.ui(new WindowChangeSelectedAmount(this.app, '', {
             suppliers: this.formValue.suppliers,
             requiredAmount: this.formValue.requiredAmount
@@ -121,35 +121,40 @@ export default class AddEditGoodWindow extends JetView {
         windowChangeAmount.show();
 
         const submitAmountListener = this.on(windowChangeAmount.getForm(), 'submit:amount', (data) => {
-            this.updateSuppliers(data);
+            this.setSuppliers(data);
+            onFinish();
         });
 
-        this.once(windowChangeAmount, 'window:amount:close', () => {
+        this.once(windowChangeAmount, 'close', () => {
             this.off(submitAmountListener);
         });
     }
 
-    updateSuppliers(suppliers) {
-        this.formValue.suppliers = suppliers || [];
+    setSuppliers(suppliers) {
+        this.formValue.suppliers = suppliers;
         this.getForm().setValues(this.formValue);
     }
 
     onSubmit() {
-        this.formValue = this.getForm().getValues();
+        new Promise((resolve) => {
+            this.formValue = this.getForm().getValues();
 
-        if (this.formValue.goodId !== this.currentGoodId) {
-            this.updateSuppliers();
-            this.getForm().callEvent('submit:good', [this.formValue]);
-        }
-        else {
-            let selectedAmount = RequiredGoods.getTotalRequiredAmount(this.formValue);
-
-            if (selectedAmount > this.formValue.requiredAmount) {
-                this.showWindowChangeAmount();
+            if (this.formValue.goodId !== this.currentGoodId) {
+                this.setSuppliers([]);
+                resolve();
             }
             else {
-                this.getForm().callEvent('submit:good', [this.formValue]);
+                let totalOrderedGoods = RequiredGoods.getTotalRequiredAmount(this.formValue);
+
+                if (totalOrderedGoods > this.formValue.requiredAmount) {
+                    this.showWindowChangeAmount(resolve);
+                }
+                else {
+                    resolve();
+                }
             }
-        }
+        }).then(() => {
+            this.getForm().callEvent('submit:good', [this.formValue]);
+        });
     }
 }

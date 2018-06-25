@@ -7373,20 +7373,20 @@
     },
     {
       "goodId": 20,
-      "requiredAmount": 50,
+      "requiredAmount": 2,
       "id": 2,
       "suppliers": [
         {
           "supplierId": 3,
-          "selectedAmount": 5
+          "selectedAmount": 1
         },
         {
           "supplierId": 4,
-          "selectedAmount": 6
+          "selectedAmount": 1
         },
         {
           "supplierId": 5,
-          "selectedAmount": 6
+          "selectedAmount": 0
         }
       ]
     },

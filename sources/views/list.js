@@ -1,10 +1,9 @@
-import {JetView} from 'webix-jet';
-
 import AddEditGoodWindow from './add-edit-window';
 import ButtonsView from './buttons';
 import RequiredGoods from '../models/reguired-goods';
+import ExtendedJetView from './ExtendedJetView';
 
-export default class ListView extends JetView {
+export default class ListView extends ExtendedJetView {
     constructor(app, name, config) {
         super(app, name);
         this.collection = config.collection;

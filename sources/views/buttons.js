@@ -1,6 +1,6 @@
-import {JetView} from 'webix-jet';
+import ExtendedJetView from './ExtendedJetView';
 
-export default class ButtonsView extends JetView {
+export default class ButtonsView extends ExtendedJetView {
     config() {
         return {
             height: 70,
