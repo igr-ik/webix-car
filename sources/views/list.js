@@ -9,7 +9,6 @@ export default class ListView extends JetView {
         super(app, name);
         this.collection = config.collection;
         this.collection.fetchData();
-        // this.buttonsView = new ButtonsView(this.app, '');
     }
 
     config() {
@@ -27,14 +26,16 @@ export default class ListView extends JetView {
                             return `${nativeClassName} webix_list_item_bucket`;
                         },
                         template: (good) => {
-                            const {goodId, amount, suppliers} = good;
+                            const {goodId, requiredAmount, suppliers} = good;
 
                             let suppliersList = suppliers
-                                .map(item => this.app.getService('suppliers').getItem(item.supplierId).name)
+                                .map(item => this.app.getService('suppliers')
+                                    .getItem(item.supplierId).name)
                                 .join(', ');
 
-                            let requiredAmount = RequiredGoods.getTotalRequiredAmount(good);
-                            let goodItem = this.app.getService('goods').getItem(goodId);
+                            let selectedAmount = RequiredGoods.getTotalRequiredAmount(good);
+                            let goodItem = this.app.getService('goods')
+                                .getItem(goodId);
 
                             return `
                                 <div class="webix_list_item_images">
@@ -42,7 +43,7 @@ export default class ListView extends JetView {
                                 </div>
                                 <div class="webix_list_item_content">
                                     <div class="webix_list_item_title">${goodItem.name}</div>
-                                    <div class="webix_list_item_quantity">${requiredAmount} of ${amount}</div>
+                                    <div class="webix_list_item_quantity">${selectedAmount} of ${requiredAmount}</div>
                                     <div class="webix_list_item_suppliers">Suppliers: ${suppliersList}</div>
                                 </div>
                                 <div class="webix_list_item_btnset">
@@ -57,13 +58,14 @@ export default class ListView extends JetView {
                         remove: this.removeHandler.bind(this)
                     }
                 },
-                new ButtonsView(this.app, 'some_name')
+                new ButtonsView(this.app, 'button_view')
             ]
         };
     }
 
     getButtonsView() {
-        return this.getRoot().queryView({name: 'some_name'}).$scope;
+        return this.getRoot()
+            .queryView({name: 'button_view'}).$scope;
     }
 
     getWindowForm() {

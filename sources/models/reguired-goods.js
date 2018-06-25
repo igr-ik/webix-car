@@ -36,6 +36,6 @@ export default class RequiredGoods extends webix.DataCollection {
     }
 
     static getTotalRequiredAmount(good) {
-        return good.suppliers.reduce((sum, curVal) => sum + curVal.requiredAmount, 0);
+        return good.suppliers.reduce((sum, curVal) => sum + curVal.selectedAmount, 0);
     }
 }

@@ -147,3 +147,11 @@
 .webix_list_item_btn .webix_icon {
     width: auto;
 }
+
+.selected-amount-danger {
+    color: red;
+}
+
+.selected-amount-success {
+    color: green;
+}

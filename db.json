@@ -7359,93 +7359,80 @@
     {
       "id": 1,
       "goodId": 47,
-      "amount": 100,
+      "requiredAmount": 100,
       "suppliers": [
         {
           "supplierId": 2,
-          "requiredAmount": 14
+          "selectedAmount": 14
         },
         {
           "supplierId": 1,
-          "requiredAmount": 6
+          "selectedAmount": 6
         }
       ]
     },
     {
       "goodId": 20,
-      "amount": 50,
+      "requiredAmount": 50,
       "id": 2,
       "suppliers": [
         {
           "supplierId": 3,
-          "requiredAmount": 5
+          "selectedAmount": 5
         },
         {
           "supplierId": 4,
-          "requiredAmount": 6
+          "selectedAmount": 6
         },
         {
           "supplierId": 5,
-          "requiredAmount": 6
+          "selectedAmount": 6
         }
       ]
     },
     {
       "goodId": 40,
-      "amount": 100,
+      "requiredAmount": 82,
       "id": 3,
       "suppliers": [
         {
           "supplierId": 6,
-          "requiredAmount": 4
+          "selectedAmount": 4
         }
       ]
     },
     {
       "goodId": 2,
-      "amount": 27,
+      "requiredAmount": 20,
       "id": 4,
-      "suppliers": [
-        {
-          "supplierId": 7,
-          "requiredAmount": 5
-        },
-        {
-          "supplierId": 10,
-          "requiredAmount": 6
-        },
-        {
-          "supplierId": 20,
-          "requiredAmount": 6
-        }
-      ]
+      "suppliers": []
     },
     {
       "goodId": 24,
-      "amount": 43,
+      "requiredAmount": 43,
       "id": 5,
       "suppliers": [
         {
-          "supplierId": 15,
-          "requiredAmount": 15
+          "supplierId": 7,
+          "selectedAmount": 14
         },
         {
           "supplierId": 12,
-          "requiredAmount": 16
+          "selectedAmount": 16
         },
         {
-          "supplierId": 7,
-          "requiredAmount": 14
+          "supplierId": 15,
+          "selectedAmount": 15
         },
         {
           "supplierId": 18,
-          "requiredAmount": 2
+          "selectedAmount": 2
         }
       ]
     },
     {
-      "goodId": 3,
-      "amount": 1,
+      "goodId": 2,
+      "requiredAmount": 7,
       "id": 6,
       "suppliers": []
     }

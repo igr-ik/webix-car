@@ -1,4 +1,6 @@
 import {JetView} from 'webix-jet';
+import RequiredGoods from '../models/reguired-goods';
+import WindowChangeSelectedAmount from './window-change-selected-amout';
 
 export default class AddEditGoodWindow extends JetView {
     config() {
@@ -42,7 +44,7 @@ export default class AddEditGoodWindow extends JetView {
                     {
                         view: 'counter',
                         label: 'Amount',
-                        name: 'amount',
+                        name: 'requiredAmount',
                         step: 1,
                         min: 0
                     },
@@ -89,12 +91,13 @@ export default class AddEditGoodWindow extends JetView {
     showFor(good) {
         this.getForm().setValues(good || {
             id: undefined,
-            amount: 0,
+            requiredAmount: 0,
             suppliers: []
         });
 
         this.setHeaderTitle(good ? 'Edit good' : 'Add good');
         this.getRoot().show();
+        this.currentGoodId = good.goodId;
     }
 
     close() {
@@ -109,7 +112,44 @@ export default class AddEditGoodWindow extends JetView {
         return this.getRoot().queryView({selector: 'form'});
     }
 
+    showWindowChangeAmount() {
+        const windowChangeAmount = this.ui(new WindowChangeSelectedAmount(this.app, '', {
+            suppliers: this.formValue.suppliers,
+            requiredAmount: this.formValue.requiredAmount
+        }));
+
+        windowChangeAmount.show();
+
+        const submitAmountListener = this.on(windowChangeAmount.getForm(), 'submit:amount', (data) => {
+            this.updateSuppliers(data);
+        });
+
+        this.once(windowChangeAmount, 'window:amount:close', () => {
+            this.off(submitAmountListener);
+        });
+    }
+
+    updateSuppliers(suppliers) {
+        this.formValue.suppliers = suppliers || [];
+        this.getForm().setValues(this.formValue);
+    }
+
     onSubmit() {
-        this.getForm().callEvent('submit:good', [this.getForm().getValues()]);
+        this.formValue = this.getForm().getValues();
+
+        if (this.formValue.goodId !== this.currentGoodId) {
+            this.updateSuppliers();
+            this.getForm().callEvent('submit:good', [this.formValue]);
+        }
+        else {
+            let selectedAmount = RequiredGoods.getTotalRequiredAmount(this.formValue);
+
+            if (selectedAmount > this.formValue.requiredAmount) {
+                this.showWindowChangeAmount();
+            }
+            else {
+                this.getForm().callEvent('submit:good', [this.formValue]);
+            }
+        }
     }
 }
