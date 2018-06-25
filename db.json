@@ -7402,31 +7402,31 @@
       ]
     },
     {
-      "goodId": 2,
-      "requiredAmount": 20,
+      "goodId": 7,
+      "requiredAmount": 27,
       "id": 4,
       "suppliers": []
     },
     {
       "goodId": 24,
-      "requiredAmount": 43,
+      "requiredAmount": 38,
       "id": 5,
       "suppliers": [
         {
           "supplierId": 7,
-          "selectedAmount": 14
+          "selectedAmount": 11
         },
         {
           "supplierId": 12,
-          "selectedAmount": 16
+          "selectedAmount": 11
         },
         {
           "supplierId": 15,
-          "selectedAmount": 15
+          "selectedAmount": 11
         },
         {
           "supplierId": 18,
-          "selectedAmount": 2
+          "selectedAmount": 5
         }
       ]
     },

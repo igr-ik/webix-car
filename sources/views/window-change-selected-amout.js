@@ -18,7 +18,7 @@ export default class WindowChangeSelectedAmount extends ExtendedJetView {
                 cols: [
                     {
                         view: 'label',
-                        label: 'Change selected amount'
+                        label: 'Change order amount'
                     },
                     {
                         view: 'button',
@@ -40,12 +40,12 @@ export default class WindowChangeSelectedAmount extends ExtendedJetView {
                     },
                     {
                         view: 'label',
-                        selector: 'selected-label'
+                        selector: 'order-label'
                     },
                     {
                         view: 'fieldset',
                         selector: 'fieldset',
-                        label: 'Selected suppliers',
+                        label: 'Order suppliers',
                         body: {
                             rows: this.suppliers.map(item => (
                                 {
@@ -57,7 +57,7 @@ export default class WindowChangeSelectedAmount extends ExtendedJetView {
                                     min: 0,
                                     labelWidth: 195,
                                     on: {
-                                        onChange: () => this.changeSelectedAmount()
+                                        onChange: () => this.updateTotalOrderAmount()
                                     }
                                 }
                             ))
@@ -98,25 +98,27 @@ export default class WindowChangeSelectedAmount extends ExtendedJetView {
         return this.getRoot().queryView({selector: 'form-change'});
     }
 
-    setHTMLInSelectedAmountLabel() {
-        this.selectedAmount = Object.values(this.getForm().getValues()).reduce((a, b) => a + b);
-        const className = (this.selectedAmount <= this.requiredAmount) ? 'success' : 'danger';
+    calculateTotalOrderAmount() {
+        return Object.values(this.getForm().getValues()).reduce((a, b) => a + b);
+    }
 
-        return this.getRoot().queryView({selector: 'selected-label'})
+    updateTotalOrderAmount() {
+        const totalOrderAmount = this.calculateTotalOrderAmount();
+        const className = (totalOrderAmount <= this.requiredAmount) ? 'success' : 'danger';
+
+        return this.getRoot().queryView({selector: 'order-label'})
             .setValue(`
-                Selected amount:
-                <span class="selected-amount-${className}">
-                    <b>${this.selectedAmount}</b>
+                Order amount:
+                <span class="order-amount-${className}">
+                    <b>${totalOrderAmount}</b>
                 </span>
             `);
     }
 
-    changeSelectedAmount() {
-        this.setHTMLInSelectedAmountLabel();
-    }
-
     onSubmit() {
-        if (this.selectedAmount <= this.requiredAmount) {
+        const totalOrderAmount = this.calculateTotalOrderAmount();
+
+        if (totalOrderAmount <= this.requiredAmount) {
             const formData = this.getForm().getValues();
 
             const newData = Object.keys(formData).map(key => ({
@@ -128,11 +130,11 @@ export default class WindowChangeSelectedAmount extends ExtendedJetView {
             this.close();
         }
         else {
-            this.app.showErrorMessage('You have more selected amount than you required');
+            this.app.showErrorMessage('You have more order amount than you required');
         }
     }
 
     init() {
-        this.setHTMLInSelectedAmountLabel();
+        this.updateTotalOrderAmount();
     }
 }

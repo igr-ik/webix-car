@@ -97,7 +97,7 @@ export default class AddEditGoodWindow extends ExtendedJetView {
 
         this.setHeaderTitle(good ? 'Edit good' : 'Add good');
         this.getRoot().show();
-        this.currentGoodId = good.goodId;
+        this.initialGoodId = good.goodId;
     }
 
     close() {
@@ -113,15 +113,17 @@ export default class AddEditGoodWindow extends ExtendedJetView {
     }
 
     showWindowChangeAmount(onFinish) {
+        const formValue = this.getForm().getValues();
+
         const windowChangeAmount = this.ui(new WindowChangeSelectedAmount(this.app, '', {
-            suppliers: this.formValue.suppliers,
-            requiredAmount: this.formValue.requiredAmount
+            suppliers: formValue.suppliers,
+            requiredAmount: formValue.requiredAmount
         }));
 
         windowChangeAmount.show();
 
         const submitAmountListener = this.on(windowChangeAmount.getForm(), 'submit:amount', (data) => {
-            this.setSuppliers(data);
+            this.updateOrderAmount(data);
             onFinish();
         });
 
@@ -130,23 +132,24 @@ export default class AddEditGoodWindow extends ExtendedJetView {
         });
     }
 
-    setSuppliers(suppliers) {
-        this.formValue.suppliers = suppliers;
-        this.getForm().setValues(this.formValue);
+    updateOrderAmount(suppliers) {
+        const formValue = this.getForm().getValues();
+        formValue.suppliers = suppliers;
+        this.getForm().setValues(formValue);
     }
 
     onSubmit() {
         new Promise((resolve) => {
-            this.formValue = this.getForm().getValues();
+            const formValue = this.getForm().getValues();
 
-            if (this.formValue.goodId !== this.currentGoodId) {
-                this.setSuppliers([]);
+            if (formValue.goodId !== this.initialGoodId) {
+                this.updateOrderAmount([]);
                 resolve();
             }
             else {
-                let totalOrderedGoods = RequiredGoods.getTotalRequiredAmount(this.formValue);
+                let totalOrderedGoods = RequiredGoods.getTotalRequiredAmount(formValue);
 
-                if (totalOrderedGoods > this.formValue.requiredAmount) {
+                if (totalOrderedGoods > formValue.requiredAmount) {
                     this.showWindowChangeAmount(resolve);
                 }
                 else {
@@ -154,7 +157,7 @@ export default class AddEditGoodWindow extends ExtendedJetView {
                 }
             }
         }).then(() => {
-            this.getForm().callEvent('submit:good', [this.formValue]);
+            this.getForm().callEvent('submit:good', [this.getForm().getValues()]);
         });
     }
 }

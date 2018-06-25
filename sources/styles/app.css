@@ -148,10 +148,10 @@
     width: auto;
 }
 
-.selected-amount-danger {
+.order-amount-danger {
     color: red;
 }
 
-.selected-amount-success {
+.order-amount-success {
     color: green;
 }
