@@ -30,7 +30,17 @@ export default class TopView extends JetView {
                 {
                     view: 'resizer'
                 },
-                SearchResultView
+                {
+                    rows: [
+                        new SearchResultView(
+                            this.app,
+                            '',
+                            {
+                                collection: this.collection
+                            }
+                        )
+                    ]
+                }
             ]
         };
     }
