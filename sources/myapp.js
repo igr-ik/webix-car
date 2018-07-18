@@ -1,9 +1,8 @@
 import './styles/app.css';
 import {JetApp, EmptyRouter, HashRouter} from 'webix-jet';
 
-import SuppliersCollection from './models/suppliers-collection';
-import GoodsCollection from './models/goods-collection';
-
+import SuppliersCollection from './models/SuppliersCollection';
+import GoodsCollection from './models/GoodsCollection';
 
 
 export default class MyApp extends JetApp {
@@ -21,8 +20,8 @@ export default class MyApp extends JetApp {
         this.setService('suppliers', new SuppliersCollection());
         this.getService('suppliers').fetchData();
 
-        this.setService('goods', new GoodsCollection());
-        this.getService('goods').fetchData();
+        this.setService('goodsCollection', new GoodsCollection());
+        this.getService('goodsCollection').fetchData();
     }
 
     showErrorMessage(text) {

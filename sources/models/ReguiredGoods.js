@@ -1,4 +1,4 @@
-import FetchData from '../models/fetch-data';
+import FetchData from './FetchData';
 
 export default class RequiredGoods extends webix.DataCollection {
     fetchData() {
@@ -37,5 +37,9 @@ export default class RequiredGoods extends webix.DataCollection {
 
     static getTotalRequiredAmount(good) {
         return good.suppliers.reduce((sum, curVal) => sum + curVal.selectedAmount, 0);
+    }
+
+    getIdOrderedGoods() {
+        return this.serialize().map(good => good.goodId);
     }
 }

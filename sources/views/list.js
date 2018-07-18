@@ -1,13 +1,13 @@
 import AddEditGoodWindow from './add-edit-window';
 import ButtonsView from './buttons';
-import RequiredGoods from '../models/reguired-goods';
+import RequiredGoods from '../models/ReguiredGoods';
 import ExtendedJetView from './ExtendedJetView';
 
 export default class ListView extends ExtendedJetView {
     constructor(app, name, config) {
         super(app, name);
-        this.collection = config.collection;
-        this.collection.fetchData();
+        this.requiredGoodsCollection = config.requiredGoodsCollection;
+        this.requiredGoodsCollection.fetchData();
     }
 
     config() {
@@ -15,7 +15,7 @@ export default class ListView extends ExtendedJetView {
             rows: [
                 {
                     view: 'list',
-                    data: this.collection,
+                    data: this.requiredGoodsCollection,
                     type: {
                         height: 'auto',
                         classname: (obj, common, marks) => {
@@ -33,7 +33,7 @@ export default class ListView extends ExtendedJetView {
                                 .join(', ');
 
                             let selectedAmount = RequiredGoods.getTotalRequiredAmount(good);
-                            let goodItem = this.app.getService('goods')
+                            let goodItem = this.app.getService('goodsCollection')
                                 .getItem(goodId);
 
                             return `
@@ -72,7 +72,7 @@ export default class ListView extends ExtendedJetView {
     }
 
     showEditWindow(e, id) {
-        this.windowEdit.showFor(this.collection.getItem(id));
+        this.windowEdit.showFor(this.requiredGoodsCollection.getItem(id));
 
         const submitGoodListener = this.on(this.getWindowForm(), 'submit:good', (data) => {
             this.editGood(data);
@@ -107,7 +107,7 @@ export default class ListView extends ExtendedJetView {
             text: 'Are you sure you want to delete this part?',
             callback: (result) => {
                 if (result) {
-                    this.collection.removeGood(id)
+                    this.requiredGoodsCollection.removeGood(id)
                         .fail(() => this.app.showErrorMessage('Uninstall error'));
                 }
             }
@@ -115,13 +115,13 @@ export default class ListView extends ExtendedJetView {
     }
 
     editGood(data) {
-        this.collection.updateGood(data)
+        this.requiredGoodsCollection.updateGood(data)
             .then(() => this.windowEdit.close())
             .fail(() => this.app.showErrorMessage('Error editing'));
     }
 
     addGood(data) {
-        this.collection.addGood(data)
+        this.requiredGoodsCollection.addGood(data)
             .then(() => this.windowEdit.close())
             .fail(() => this.app.showErrorMessage('Error additing'));
     }

@@ -1,8 +1,8 @@
-import FetchData from './fetch-data';
+import FetchData from './FetchData';
 
-export default class GoodsCollection extends webix.DataCollection {
+export default class SuppliersCollection extends webix.DataCollection {
     fetchData() {
-        this.waitData = FetchData.get('goodsCollection')
+        this.waitData = FetchData.get('suppliers')
             .then((res) => {
                 this.waitData = null;
                 this.parse(res);

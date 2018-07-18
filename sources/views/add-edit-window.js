@@ -1,4 +1,4 @@
-import RequiredGoods from '../models/reguired-goods';
+import RequiredGoods from '../models/ReguiredGoods';
 import WindowChangeSelectedAmount from './window-change-selected-amout';
 import ExtendedJetView from './ExtendedJetView';
 
@@ -35,7 +35,7 @@ export default class AddEditGoodWindow extends ExtendedJetView {
                         label: 'Name',
                         name: 'goodId',
                         options: {
-                            data: this.app.getService('goods'),
+                            data: this.app.getService('goodsCollection'),
                             body: {
                                 template: '#name#'
                             }

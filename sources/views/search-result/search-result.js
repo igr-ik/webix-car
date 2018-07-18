@@ -11,21 +11,12 @@ export default class SearchResulstView extends JetView {
 
     config() {
         return {
-            view: 'scrollview',
-            body: {
-                type: 'space',
-                rows: [
-                    SupplierView,
-                    SupplierView,
-                    SupplierView,
-                    SupplierView,
-                    SupplierView,
-                    SupplierView,
-                    SupplierView,
-                    SupplierView,
-                    SupplierView
-                ]
-            }
+            view: 'accordion',
+            rows: [
+                SupplierView,
+                SupplierView,
+                SupplierView
+            ]
         };
     }
 }
